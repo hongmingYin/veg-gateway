@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: veg-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 47.93.50.22:8848
+        namespace: ec8db9e3-e369-4bed-a49c-07a52039f237
+        group: GATEWAY_GROUP
+      config:
+        server-addr: 47.93.50.22:8848
+        namespace: ec8db9e3-e369-4bed-a49c-07a52039f237
+        group: GATEWAY_GROUP
+        file-extension: yaml
