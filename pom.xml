@@ -8,6 +8,7 @@
         <groupId>cn.veg</groupId>
         <artifactId>veg</artifactId>
         <version>1.0.0</version>
+        <relativePath>../veg/pom.xml</relativePath>
     </parent>
 
     <artifactId>veg-gateway</artifactId>
