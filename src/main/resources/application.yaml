@@ -1,3 +1,20 @@
-spring:
-  profiles:
-    active: dev
+#spring:
+#  profiles:
+#    active: dev
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: carrot-service
+#          uri: lb://veg-carrot
+#          predicates:
+#            - Path=/carrot/**
+#          filters:
+#            - StripPrefix=1
+#        - id: celery-service
+#          uri: lb://veg-celery
+#          predicates:
+#            - Path=/celery/**
+#          filters:
+#            - StripPrefix=1
+#server:
+#  port: 17070
