@@ -1,3 +1,6 @@
+#server:
+#  port: 17070
+#
 #spring:
 #  profiles:
 #    active: dev
@@ -16,5 +19,8 @@
 #            - Path=/celery/**
 #          filters:
 #            - StripPrefix=1
-#server:
-#  port: 17070
+#
+#logging:
+#  file: logs/veg-gateway.log
+#  level:
+#    root: info
