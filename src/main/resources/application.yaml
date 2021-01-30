@@ -24,3 +24,14 @@
 #  file: logs/veg-gateway.log
 #  level:
 #    root: info
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always
+#    shutdown:
+#      enabled: true
