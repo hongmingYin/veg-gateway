@@ -13,4 +13,5 @@ import java.util.List;
 @ConfigurationProperties(prefix = "config")
 public class BaseConfig {
     private List<String> excludePaths;
+    private String jwtSecretKey;
 }

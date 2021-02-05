@@ -1,6 +1,7 @@
 package cn.veg.gateway.AuthFilter;
 
 import cn.veg.common.response.ResponseBody;
+import cn.veg.common.token.JWTManager;
 import cn.veg.common.utils.JacksonUtil;
 import cn.veg.common.utils.StringUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -14,13 +15,17 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AuthFilter implements GlobalFilter {
     private List<String> excludePaths;
+    private JWTManager jwtManager;
 
-    public AuthFilter(List<String> excludePaths) {
-        this.excludePaths = excludePaths;
+
+    public AuthFilter(List<String> excludePaths, JWTManager jwtManager) {
+        this.excludePaths = excludePaths != null ? excludePaths : new ArrayList<>();
+        this.jwtManager = jwtManager;
     }
 
     @Override
@@ -28,15 +33,24 @@ public class AuthFilter implements GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
-        String path = request.getURI().getPath();
-        if (ignore(path))
-            return chain.filter(exchange);
+        try {
+            String path = request.getURI().getPath();
+            if (ignore(path))
+                return chain.filter(exchange);
 
-        List<String> tokens = request.getHeaders().get("token");
-        if (CollectionUtils.isEmpty(tokens) || StringUtil.isEmpty(tokens.get(0))) {
+            List<String> tokens = request.getHeaders().get("token");
+            if (CollectionUtils.isEmpty(tokens) || StringUtil.isEmpty(tokens.get(0))) {
+                return error(response);
+            }
+
+            ServerHttpRequest mutateRequest = exchange.getRequest()
+                    .mutate()
+                    .header("token", JacksonUtil.parse(jwtManager.decodeToken(tokens.get(0))))
+                    .build();
+            return chain.filter(exchange.mutate().request(mutateRequest).build());
+        } catch (Exception e) {
             return error(response);
         }
-        return chain.filter(exchange);
     }
 
     private boolean ignore(String path) {

@@ -1,5 +1,6 @@
 package cn.veg.gateway.config;
 
+import cn.veg.common.token.JWTManager;
 import cn.veg.gateway.AuthFilter.AuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -15,6 +16,7 @@ public class FilterConfig {
     @Bean
     @Order(-999)
     public GlobalFilter createGlobalFilter() {
-        return new AuthFilter(baseConfig.getExcludePaths());
+        JWTManager jwtManager = new JWTManager(baseConfig.getJwtSecretKey());
+        return new AuthFilter(baseConfig.getExcludePaths(), jwtManager);
     }
 }
